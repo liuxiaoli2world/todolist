@@ -36,7 +36,6 @@ class TodoList extends Component {
       <div>
         <input
           type="text"
-          className="input"
           value={this.state.inputValue}
           onChange={this.onChange}
         />
