@@ -3,7 +3,7 @@
  * @LastEditors: liuxiaoli
  * @Description: 单条待办项目组件
  * @Date: 2019-03-02 16:01:24
- * @LastEditTime: 2019-03-02 16:17:37
+ * @LastEditTime: 2019-03-02 17:39:14
  */
 import React, { Component } from 'react';
 
@@ -16,15 +16,17 @@ class TodoItem extends Component {
 
   /**
    * @description: li 元素事件处理
-   * @param {event} 
-   * @return: 
+   * @param {event}
+   * @return:
    */
   handleClick(event) {
-    this.props.handleItemClick(this.props.index);
+    const { handleItemClick, index } = this.props;
+    handleItemClick(index);
   }
 
   render() {
-    return <li onClick={this.handleClick}>{this.props.content}</li>;
+    const { content } = this.props;
+    return <li onClick={this.handleClick}>{content}</li>;
   }
 }
 
