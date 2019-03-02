@@ -3,9 +3,10 @@
  * @LastEditors: liuxiaoli
  * @Description: 单条待办项目组件
  * @Date: 2019-03-02 16:01:24
- * @LastEditTime: 2019-03-02 17:39:14
+ * @LastEditTime: 2019-03-02 18:34:35
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class TodoItem extends Component {
   constructor(props) {
@@ -28,6 +29,23 @@ class TodoItem extends Component {
     const { content } = this.props;
     return <li onClick={this.handleClick}>{content}</li>;
   }
+}
+
+/**
+ * @description: 属性的类型校验
+ */
+TodoItem.propTypes = {
+  content: PropTypes.string,
+  handleItemClick: PropTypes.func,
+  index: PropTypes.number.isRequired
+}
+
+/**
+ * @description: 设置属性的默认值
+ * @return: 
+ */
+TodoItem.defaultProps = {
+  index: 0
 }
 
 export default TodoItem;
