@@ -1,5 +1,13 @@
+/*
+ * @Author: liuxiaoli
+ * @LastEditors: liuxiaoli
+ * @Description: 代办组件
+ * @Date: 2019-03-01 15:56:57
+ * @LastEditTime: 2019-03-02 16:48:02
+ */
 import React, { Component, Fragment } from 'react';
-import './style.css';
+import TodoItem from './TodoItem';
+
 class TodoList extends Component {
   constructor(props) {
     super(props);
@@ -10,12 +18,23 @@ class TodoList extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.handleBtnClick = this.handleBtnClick.bind(this);
+    this.handleItemClick = this.handleItemClick.bind(this);
   }
 
+  /**
+   * @description: 输入框内容改变事件处理
+   * @param {event} 
+   * @return: 
+   */
   onChange(event) {
     this.setState({ inputValue: event.target.value });
   }
 
+  /**
+   * @description: 添加按钮点击事件处理
+   * @param {event} 
+   * @return: 
+   */
   handleBtnClick(event) {
     this.setState({
       inputValue: '',
@@ -23,7 +42,12 @@ class TodoList extends Component {
     });
   }
 
-  handleItemClick(index, event) {
+  /**
+   * @description: 列表项目点击事件处理
+   * @param {number} 点击项目的索引
+   * @return: 
+   */
+  handleItemClick(index) {
     const list = [...this.state.list];
     list.splice(index, 1);
     this.setState({
@@ -34,26 +58,20 @@ class TodoList extends Component {
   render() {
     return (
       <Fragment>
-        {/* 注释一 */}
-        {
-          // 注释二
-        }
-        <label htmlFor="inputArea">姓名：</label>
         <input
-          id="inputArea"
           type="text"
           className="input"
           value={this.state.inputValue}
           onChange={this.onChange}
         />
-        <button onClick={this.handleBtnClick}>提交</button>
+        <button onClick={this.handleBtnClick}>添加</button>
         <ul>
           {this.state.list.map((item, index) => {
             return (
-              <li
-                key={index}
-                onClick={this.handleItemClick.bind(this, index)}
-                dangerouslySetInnerHTML={{ __html: item }}
+              <TodoItem
+                content={item}
+                index={index}
+                handleItemClick={this.handleItemClick}
               />
             );
           })}
