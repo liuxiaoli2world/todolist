@@ -3,7 +3,7 @@
  * @LastEditors: liuxiaoli
  * @Description: 单条待办项目组件
  * @Date: 2019-03-02 16:01:24
- * @LastEditTime: 2019-03-02 18:34:35
+ * @LastEditTime: 2019-03-06 15:49:42
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -14,15 +14,14 @@ class TodoItem extends Component {
 
     this.handleClick = this.handleClick.bind(this);
   }
-
   /**
    * @description: li 元素事件处理
    * @param {event}
    * @return:
    */
-  handleClick(event) {
-    const { handleItemClick, index } = this.props;
-    handleItemClick(index);
+  handleClick() {
+    const { handleItemClick, id } = this.props;
+    handleItemClick(id);
   }
 
   render() {
@@ -35,17 +34,9 @@ class TodoItem extends Component {
  * @description: 属性的类型校验
  */
 TodoItem.propTypes = {
+  id: PropTypes.string.isRequired,
   content: PropTypes.string,
-  handleItemClick: PropTypes.func,
-  index: PropTypes.number.isRequired
-}
-
-/**
- * @description: 设置属性的默认值
- * @return: 
- */
-TodoItem.defaultProps = {
-  index: 0
-}
+  handleItemClick: PropTypes.func
+};
 
 export default TodoItem;
