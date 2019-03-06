@@ -3,34 +3,19 @@
  * @LastEditors: liuxiaoli
  * @Description: 代办组件
  * @Date: 2019-03-01 15:56:57
- * @LastEditTime: 2019-03-02 17:50:03
+ * @LastEditTime: 2019-03-06 15:52:09
  */
 import React, { Component, Fragment } from 'react';
 import TodoItem from './TodoItem';
+import store from '../store';
+import { addTodoListItemAction, deleteTodoListItemAction } from '../actions';
 
 class TodoList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      inputValue: '',
-      list: []
-    };
 
-    this.onChange = this.onChange.bind(this);
     this.handleBtnClick = this.handleBtnClick.bind(this);
     this.handleItemClick = this.handleItemClick.bind(this);
-  }
-
-  /**
-   * @description: 输入框内容改变事件处理
-   * @param {event}
-   * @return:
-   */
-  onChange(event) {
-    const value = event.target.value;
-    this.setState(() => ({
-      inputValue: value
-    }));
   }
 
   /**
@@ -39,10 +24,8 @@ class TodoList extends Component {
    * @return:
    */
   handleBtnClick(event) {
-    this.setState(preState => ({
-      inputValue: '',
-      list: [...preState.list, preState.inputValue]
-    }));
+    store.dispatch(addTodoListItemAction(this.input.value));
+    this.input.value = '';
   }
 
   /**
@@ -50,25 +33,20 @@ class TodoList extends Component {
    * @param {number} 点击项目的索引
    * @return:
    */
-  handleItemClick(index) {
-    this.setState(preState => {
-      const list = [...preState.list];
-      list.splice(index, 1);
-      return { list };
-    });
+  handleItemClick(id) {
+    store.dispatch(deleteTodoListItemAction(id));
   }
-  
+
   /**
    * @description: 生成列表
-   * @return: 
+   * @return:
    */
   geneListItems() {
-    return this.state.list.map((item, index) => {
+    return store.getState().list.map((item, index) => {
       return (
         <TodoItem
-          key={index}
-          content={item}
-          index={index}
+          key={item.id}
+          {...item}
           handleItemClick={this.handleItemClick}
         />
       );
@@ -76,14 +54,14 @@ class TodoList extends Component {
   }
 
   render() {
-    const { inputValue } = this.state;
     return (
       <Fragment>
         <input
           type="text"
           className="input"
-          value={inputValue}
-          onChange={this.onChange}
+          ref={node => {
+            this.input = node;
+          }}
         />
         <button onClick={this.handleBtnClick}>添加</button>
         <ul>{this.geneListItems()}</ul>
