@@ -3,7 +3,7 @@
  * @LastEditors: liuxiaoli
  * @Description: 代办组件
  * @Date: 2019-03-01 15:56:57
- * @LastEditTime: 2019-03-06 15:52:09
+ * @LastEditTime: 2019-03-07 09:15:10
  */
 import React, { Component, Fragment } from 'react';
 import TodoItem from './TodoItem';
@@ -42,7 +42,7 @@ class TodoList extends Component {
    * @return:
    */
   geneListItems() {
-    return store.getState().list.map((item, index) => {
+    return store.getState().todoList.map((item, index) => {
       return (
         <TodoItem
           key={item.id}
