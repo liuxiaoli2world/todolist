@@ -5,69 +5,51 @@
  * @Date: 2019-03-01 15:56:57
  * @LastEditTime: 2019-03-07 15:27:47
  */
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import TodoItem from './TodoItem';
-import store from '../store';
 import { addTodoListItemAction, deleteTodoListItemAction } from '../actions';
 
-class TodoList extends Component {
-  constructor(props) {
-    super(props);
+const TodoList = ({ addClick, itemClick, todoList }) => {
+  let input;
 
-    this.handleBtnClick = this.handleBtnClick.bind(this);
-    this.handleItemClick = this.handleItemClick.bind(this);
+  function itemClickEvent(value) {
+    addClick(value);
+    console.log('object');
+    input.value = '';
   }
 
-  /**
-   * @description: 添加按钮点击事件处理
-   * @param {event}
-   * @return:
-   */
-  handleBtnClick(event) {
-    store.dispatch(addTodoListItemAction(this.input.value));
-    this.input.value = '';
-  }
+  return (
+    <Fragment>
+      <input type="text" className="input" ref={node => (input = node)} />
+      <button onClick={() => itemClickEvent(input.value)}>添加</button>
+      <ul>
+        {todoList.map(item => (
+          <TodoItem
+            key={item.id}
+            {...item}
+            handleItemClick={e => itemClick(item.id)}
+          />
+        ))}
+      </ul>
+    </Fragment>
+  );
+};
 
-  /**
-   * @description: 列表项目点击事件处理
-   * @param {number} 点击项目的索引
-   * @return:
-   */
-  handleItemClick(id) {
-    store.dispatch(deleteTodoListItemAction(id));
-  }
+const mapStateToProps = state => {
+  return {
+    todoList: [...state.todoList]
+  };
+};
 
-  /**
-   * @description: 生成列表
-   * @return:
-   */
-  geneListItems() {
-    return store.getState().todoList.map((item, index) => {
-      return (
-        <TodoItem
-          key={item.id}
-          {...item}
-          handleItemClick={this.handleItemClick}
-        />
-      );
-    });
-  }
+const mapDispatchToProps = dispatch => {
+  return {
+    addClick: value => dispatch(addTodoListItemAction(value)),
+    itemClick: id => dispatch(deleteTodoListItemAction(id))
+  };
+};
 
-  render() {
-    return (
-      <Fragment>
-        <input
-          type="text"
-          className="input"
-          ref={node => {
-            this.input = node;
-          }}
-        />
-        <button onClick={this.handleBtnClick}>添加</button>
-        <ul>{this.geneListItems()}</ul>
-      </Fragment>
-    );
-  }
-}
-
-export default TodoList;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TodoList);
